@@ -1,0 +1,1 @@
+import PublicGoodStrategyMethodPart  # for sqlalchemy
