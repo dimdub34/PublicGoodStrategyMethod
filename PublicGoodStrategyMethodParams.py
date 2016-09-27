@@ -10,18 +10,22 @@ which means that you should ask to the developer ;-)
 
 # variables --------------------------------------------------------------------
 TREATMENTS = {0: "baseline"}
+INCONDITIONNELLE = 0
+CONDITIONNELLE = 1
 
 # parameters -------------------------------------------------------------------
 TREATMENT = 0
-TAUX_CONVERSION = 1
+TAUX_CONVERSION = 0.5
 NOMBRE_PERIODES = 0
-TAILLE_GROUPES = 0
+TAILLE_GROUPES = 2
 GROUPES_CHAQUE_PERIODE = False
 MONNAIE = u"ecu"
+DOTATION = 20
+MPCR = 0.5
 
 # DECISION
 DECISION_MIN = 0
-DECISION_MAX = 100
+DECISION_MAX = DOTATION
 DECISION_STEP = 1
 
 

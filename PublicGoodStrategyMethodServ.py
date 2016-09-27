@@ -6,6 +6,8 @@ from twisted.internet import defer
 from util import utiltools
 from util.utili18n import le2mtrans
 import PublicGoodStrategyMethodParams as pms
+from random import choice
+import numpy as np
 
 
 logger = logging.getLogger("le2m.{}".format(__name__))
@@ -87,14 +89,39 @@ class Serveur(object):
             # decision
             yield(self._le2mserv.gestionnaire_experience.run_step(
                 le2mtrans(u"Decision"), self._tous, "display_decision"))
-            
+
+            # dans chaque groupe on en choisit un pour une décision
+            # inconditionnelle et l'autre pour une décision conditionnelle
+            for k, v in self._le2mserv.gestionnaire_groupes.get_groupes(
+                    "PublicGoodStrategyMethod").viewitems():
+                cond_player = choice(v)
+                cond_player.currentperiod.PGSM_payoff_decision_type = pms.CONDITIONNELLE
+                incond_dec = []
+                for j in v:
+                    if j == cond_player:
+                        continue
+                    j.currentperiod.PGSM_payoff_decision_type = pms.INCONDITIONNELLE
+                    incond_dec.append(j.currentperiod.PGSM_inconditionnel)
+                incond_mean = int(np.around(np.mean(incond_dec), decimals=0))
+                cond_dec = getattr(cond_player.currentperiod,
+                                   "PGSM_conditionnel_{}".format(incond_mean))
+                total_groupe = np.sum(incond_dec) + cond_dec
+                for j in v:
+                    j.currentperiod.PGSM_payoff_decision_incond_mean = incond_mean
+                    j.currentperiod.PGSM_payoff_decision_cond = cond_dec
+                    j.currentperiod.PGSM_public_account = total_groupe
+                self._le2mserv.gestionnaire_graphique.infoserv(
+                    u"G{}: cond. {}, incond. mean {}, cond. {} -> total {}".format(
+                        k.split("_")[2], cond_player.joueur, incond_mean, cond_dec,
+                        total_groupe))
+
             # period payoffs
             self._le2mserv.gestionnaire_experience.compute_periodpayoffs(
                 "PublicGoodStrategyMethod")
         
             # summary
-            yield(self._le2mserv.gestionnaire_experience.run_step(
-                le2mtrans(u"Summary"), self._tous, "display_summary"))
+            # yield(self._le2mserv.gestionnaire_experience.run_step(
+            #     le2mtrans(u"Summary"), self._tous, "display_summary"))
         
         # End of part ==========================================================
         yield (self._le2mserv.gestionnaire_experience.finalize_part(

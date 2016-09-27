@@ -9,6 +9,7 @@ from server.servbase import Base
 from server.servparties import Partie
 from util.utiltools import get_module_attributes
 import PublicGoodStrategyMethodParams as pms
+import numpy as np
 
 
 logger = logging.getLogger("le2m")
@@ -57,10 +58,22 @@ class PartiePGSM(Partie):
         """
         logger.debug(u"{} Decision".format(self.joueur))
         debut = datetime.now()
-        self.currentperiod.PGSM_decision = yield(self.remote.callRemote(
-            "display_decision"))
+
+        self.currentperiod.PGSM_inconditionnel = yield(
+            self.remote.callRemote("display_inconditionnel"))
+        self.joueur.info(u"incond. {}".format(
+            self.currentperiod.PGSM_inconditionnel))
+
+        conditionnels = yield(
+            self.remote.callRemote("display_conditionnel"))
+        for i in range(21):
+            setattr(self.currentperiod, "PGSM_conditionnel_{}".format(i),
+                    conditionnels["conditionnel_{}".format(i)])
+        self.joueur.info(u"cond. {}".format(
+            [v for k, v in sorted(conditionnels.viewitems(),
+                                  key=lambda (x, y): int(x.split("_")[1]))]))
+
         self.currentperiod.PGSM_decisiontime = (datetime.now() - debut).seconds
-        self.joueur.info(u"{}".format(self.currentperiod.PGSM_decision))
         self.joueur.remove_waitmode()
 
     def compute_periodpayoff(self):
@@ -70,6 +83,24 @@ class PartiePGSM(Partie):
         """
         logger.debug(u"{} Period Payoff".format(self.joueur))
         self.currentperiod.PGSM_periodpayoff = 0
+
+        # indiv account
+        if self.currentperiod.PGSM_payoff_decision_type == pms.CONDITIONNELLE:
+            self.currentperiod.PGSM_payoff_indiv_account = pms.DOTATION - \
+                self.currentperiod.PGSM_payoff_decision_cond
+        else:
+            self.currentperiod.PGSM_payoff_indiv_account = pms.DOTATION - \
+                self.currentperiod.PGSM_inconditionnel
+
+        # public account
+        self.currentperiod.PGSM_payoff_public_account = \
+            float(np.around(self.currentperiod.PGSM_public_account * pms.MPCR,
+                            decimals=2))
+
+        # total
+        self.currentperiod.PGSM_periodpayoff = \
+            self.currentperiod.PGSM_payoff_indiv_account + \
+            self.currentperiod.PGSM_payoff_public_account
 
         # cumulative payoff since the first period
         if self.currentperiod.PGSM_period < 2:
@@ -88,19 +119,19 @@ class PartiePGSM(Partie):
             self.joueur,
             self.currentperiod.PGSM_periodpayoff))
 
-    @defer.inlineCallbacks
-    def display_summary(self, *args):
-        """
-        Send a dictionary with the period content values to the remote.
-        The remote creates the text and the history
-        :param args:
-        :return:
-        """
-        logger.debug(u"{} Summary".format(self.joueur))
-        yield(self.remote.callRemote(
-            "display_summary", self.currentperiod.todict()))
-        self.joueur.info("Ok")
-        self.joueur.remove_waitmode()
+    # @defer.inlineCallbacks
+    # def display_summary(self, *args):
+    #     """
+    #     Send a dictionary with the period content values to the remote.
+    #     The remote creates the text and the history
+    #     :param args:
+    #     :return:
+    #     """
+    #     logger.debug(u"{} Summary".format(self.joueur))
+    #     yield(self.remote.callRemote(
+    #         "display_summary", self.currentperiod.todict()))
+    #     self.joueur.info("Ok")
+    #     self.joueur.remove_waitmode()
 
     @defer.inlineCallbacks
     def compute_partpayoff(self):
@@ -114,8 +145,12 @@ class PartiePGSM(Partie):
 
         self.PGSM_gain_ecus = self.currentperiod.PGSM_cumulativepayoff
         self.PGSM_gain_euros = float(self.PGSM_gain_ecus) * float(pms.TAUX_CONVERSION)
+
         yield (self.remote.callRemote(
             "set_payoffs", self.PGSM_gain_euros, self.PGSM_gain_ecus))
+
+        yield (self.remote.callRemote("set_period_content",
+                                      self.currentperiod.todict()))
 
         logger.info(u'{} Payoff ecus {} Payoff euros {:.2f}'.format(
             self.joueur, self.PGSM_gain_ecus, self.PGSM_gain_euros))
@@ -131,8 +166,35 @@ class RepetitionsPGSM(Base):
     PGSM_period = Column(Integer)
     PGSM_treatment = Column(Integer)
     PGSM_group = Column(Integer)
-    PGSM_decision = Column(Integer)
+    PGSM_inconditionnel = Column(Integer)
+    PGSM_conditionnel_0 = Column(Integer)
+    PGSM_conditionnel_1 = Column(Integer)
+    PGSM_conditionnel_2 = Column(Integer)
+    PGSM_conditionnel_3 = Column(Integer)
+    PGSM_conditionnel_4 = Column(Integer)
+    PGSM_conditionnel_5 = Column(Integer)
+    PGSM_conditionnel_6 = Column(Integer)
+    PGSM_conditionnel_7 = Column(Integer)
+    PGSM_conditionnel_8 = Column(Integer)
+    PGSM_conditionnel_9 = Column(Integer)
+    PGSM_conditionnel_10 = Column(Integer)
+    PGSM_conditionnel_11 = Column(Integer)
+    PGSM_conditionnel_12 = Column(Integer)
+    PGSM_conditionnel_13 = Column(Integer)
+    PGSM_conditionnel_14 = Column(Integer)
+    PGSM_conditionnel_15 = Column(Integer)
+    PGSM_conditionnel_16 = Column(Integer)
+    PGSM_conditionnel_17 = Column(Integer)
+    PGSM_conditionnel_18 = Column(Integer)
+    PGSM_conditionnel_19 = Column(Integer)
+    PGSM_conditionnel_20 = Column(Integer)
     PGSM_decisiontime = Column(Integer)
+    PGSM_payoff_decision_type = Column(Integer)
+    PGSM_payoff_decision_incond_mean = Column(Integer)
+    PGSM_payoff_decision_cond = Column(Integer)
+    PGSM_public_account = Column(Integer)
+    PGSM_payoff_indiv_account = Column(Integer)
+    PGSM_payoff_public_account = Column(Float)
     PGSM_periodpayoff = Column(Float)
     PGSM_cumulativepayoff = Column(Float)
 
