@@ -40,10 +40,15 @@ def get_text_explanation_cond():
     txt = trans_PGSM(u"Vous disposez d'une dotation de {}.").format(
         get_pluriel(pms.DOTATION, trans_PGSM(u"jeton")))
     txt += u"\n"
-    txt += trans_PGSM(u"Saisissez le nombre de jetons que vous placez sur "
-                      u"le compte collectif pour chaque niveau de placement "
-                      u"moyen effectué par les autres membres de votre "
-                      u"groupe.")
+    if pms.TAILLE_GROUPES > 2 :
+        txt += trans_PGSM(u"Saisissez le nombre de jetons que vous placez sur "
+                          u"le compte collectif pour chaque placement "
+                          u"moyen effectué par les autres membres de votre "
+                          u"groupe.")
+    else:
+        txt += trans_PGSM(u"Saisissez le nombre de jetons que vous placez sur "
+                          u"le compte collectif pour chaque placement "
+                          u"effectué par l'autre membre de votre groupe.")
     return txt
 
 
@@ -56,11 +61,23 @@ def get_text_final(period_content):
             get_pluriel(period_content["PGSM_inconditionnel"], u"jeton"))
     else:
         txt += trans_PGSM(u"C'est votre décision conditionnelle qui a été "
-                          u"prise en compte. Les autres membres de votre groupe "
-                          u"ont en moyenne placé {} sur le compte collectif, "
-                          u"et donc vous {}.").format(
-            get_pluriel(period_content["PGSM_payoff_decision_incond_mean"], u"jeton"),
-            get_pluriel(period_content["PGSM_payoff_decision_cond"], u"jeton"))
+                          u"prise en compte.")
+        if pms.TAILLE_GROUPES > 2:
+            txt += trans_PGSM(u"Les autres membres de votre groupe "
+                              u"ont en moyenne placé {} sur le compte collectif, "
+                              u"et donc vous {}.").format(
+                get_pluriel(period_content["PGSM_payoff_decision_incond_mean"],
+                            u"jeton"),
+                get_pluriel(period_content["PGSM_payoff_decision_cond"],
+                            u"jeton"))
+        else:
+            txt += trans_PGSM(u"L'autre membres de votre groupe a placé {} "
+                              u"sur le compte collectif, et donc "
+                              u"vous {}.").format(
+                get_pluriel(period_content["PGSM_payoff_decision_incond_mean"],
+                            u"jeton"),
+                get_pluriel(period_content["PGSM_payoff_decision_cond"],
+                            u"jeton"))
 
     txt += trans_PGSM(u" Au total votre groupe a placé {} sur le compte "
                       u"collectif. "
@@ -71,9 +88,4 @@ def get_text_final(period_content):
         period_content["PGSM_payoff_public_account"],
         get_pluriel(period_content["PGSM_periodpayoff"], pms.MONNAIE))
     return txt
-
-# def get_text_summary(period_content):
-#     txt = trans_PGSM(u"Summary text")
-#     return txt
-
 

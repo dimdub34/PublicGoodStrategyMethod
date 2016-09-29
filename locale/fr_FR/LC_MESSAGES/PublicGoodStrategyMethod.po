@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-29 14:55+0200\n"
+"PO-Revision-Date: 2016-09-29 14:56+0200\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodGui.py:45
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodGui.py:110
+msgid "Décision"
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:30
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:40
+msgid "Vous disposez d'une dotation de {}."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:31
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:41
+msgid "jeton"
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:35
+msgid "Saisissez le nombre de jetons que vous placez sur le compte collectif"
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:44
+msgid ""
+"Saisissez le nombre de jetons que vous placez sur le compte collectif pour "
+"chaque placement moyen effectué par les autres membres de votre groupe."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:49
+msgid ""
+"Saisissez le nombre de jetons que vous placez sur le compte collectif pour "
+"chaque placement effectué par l'autre membre de votre groupe."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:58
+msgid ""
+"C'est votre décision inconditionnelle qui a été prise en compte. Vous avez "
+"placé {} sur le compte collectif."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:63
+msgid "C'est votre décision conditionnelle qui a été prise en compte."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:66
+msgid ""
+"Les autres membres de votre groupe ont en moyenne placé {} sur le compte "
+"collectif, et donc vous {}."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:74
+msgid ""
+"L'autre membres de votre groupe a placé {} sur le compte collectif, et donc "
+"vous {}."
+msgstr ""
+
+#: /home/dimitri/Documents/travail/programmes/le2m-v2.1/le2m/parts/PublicGoodStrategyMethod/PublicGoodStrategyMethodTexts.py:82
+msgid ""
+" Au total votre groupe a placé {} sur le compte collectif. Votre gain est "
+"donc de {} (compte individuel) + {} (compte collectif) = {}."
+msgstr ""
