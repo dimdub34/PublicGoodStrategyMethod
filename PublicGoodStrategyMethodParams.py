@@ -15,7 +15,7 @@ CONDITIONNELLE = 1
 
 # parameters -------------------------------------------------------------------
 TREATMENT = 0
-TAUX_CONVERSION = 0.5
+TAUX_CONVERSION = 0.35
 NOMBRE_PERIODES = 0
 TAILLE_GROUPES = 2
 GROUPES_CHAQUE_PERIODE = False
