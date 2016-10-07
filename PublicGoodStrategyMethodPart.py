@@ -44,6 +44,7 @@ class PartiePGSM(Partie):
         """
         logger.debug(u"{} New Period".format(self.joueur))
         self.currentperiod = RepetitionsPGSM(period)
+        self.currentperiod.PGSM_group = self.joueur.groupe
         self.le2mserv.gestionnaire_base.ajouter(self.currentperiod)
         self.repetitions.append(self.currentperiod)
         yield (self.remote.callRemote("newperiod", period))
@@ -144,7 +145,8 @@ class PartiePGSM(Partie):
         logger.debug(u"{} Part Payoff".format(self.joueur))
 
         self.PGSM_gain_ecus = self.currentperiod.PGSM_cumulativepayoff
-        self.PGSM_gain_euros = float(self.PGSM_gain_ecus) * float(pms.TAUX_CONVERSION)
+        self.PGSM_gain_euros = float(np.around(
+            self.PGSM_gain_ecus * pms.TAUX_CONVERSION, decimals=2))
 
         yield (self.remote.callRemote(
             "set_payoffs", self.PGSM_gain_euros, self.PGSM_gain_ecus))
