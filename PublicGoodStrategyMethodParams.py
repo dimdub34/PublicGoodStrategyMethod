@@ -15,13 +15,13 @@ CONDITIONNELLE = 1
 
 # parameters -------------------------------------------------------------------
 TREATMENT = 0
-TAUX_CONVERSION = 0.35
+TAUX_CONVERSION = 1.5
 NOMBRE_PERIODES = 0
 TAILLE_GROUPES = 2
 GROUPES_CHAQUE_PERIODE = False
 MONNAIE = u"ecu"
 DOTATION = 20
-MPCR = 0.5
+MPCR = 0.6
 
 # DECISION
 DECISION_MIN = 0
