@@ -92,7 +92,7 @@ class RemotePGSM(IRemote):
 
     def remote_set_period_content(self, period_content):
         txt = texts_PGSM.get_text_final(period_content)
-        txt += u"<br />" + self.payoff_text
+        # txt += u"<br />" + self.payoff_text
         self.payoff_text = txt
 
     # def remote_display_summary(self, period_content):

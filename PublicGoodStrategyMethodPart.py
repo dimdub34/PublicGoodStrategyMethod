@@ -87,15 +87,18 @@ class PartiePGSM(Partie):
 
         # indiv account
         if self.currentperiod.PGSM_payoff_decision_type == pms.CONDITIONNELLE:
-            self.currentperiod.PGSM_payoff_indiv_account = pms.DOTATION - \
-                self.currentperiod.PGSM_payoff_decision_cond
+            self.currentperiod.PGSM_payoff_indiv_account = \
+                float(np.around(
+                    (pms.DOTATION - self.currentperiod.PGSM_payoff_decision_cond) *
+                    pms.TAUX_CI, decimals=2))
         else:
-            self.currentperiod.PGSM_payoff_indiv_account = pms.DOTATION - \
-                self.currentperiod.PGSM_inconditionnel
+            self.currentperiod.PGSM_payoff_indiv_account = \
+                float(np.around((pms.DOTATION - \
+                self.currentperiod.PGSM_inconditionnel) * pms.TAUX_CI, decimals=2))
 
         # public account
         self.currentperiod.PGSM_payoff_public_account = \
-            float(np.around(self.currentperiod.PGSM_public_account * pms.MPCR,
+            float(np.around(self.currentperiod.PGSM_public_account * pms.TAUX_CC,
                             decimals=2))
 
         # total
