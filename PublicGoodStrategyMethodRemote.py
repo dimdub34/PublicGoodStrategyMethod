@@ -95,6 +95,11 @@ class RemotePGSM(IRemote):
         # txt += u"<br />" + self.payoff_text
         self.payoff_text = txt
 
+    def remote_display_payoffs(self):
+        logger.debug(u"{} display_payoffs".format(self.le2mclt.uid))
+        return self.le2mclt.get_remote("base").remote_display_information(
+            self.payoff_text, screensize=(450, 180))
+
     # def remote_display_summary(self, period_content):
     #     """
     #     Display the summary screen
