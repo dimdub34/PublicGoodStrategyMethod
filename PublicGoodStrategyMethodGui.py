@@ -138,3 +138,73 @@ class GuiConditionnel(QtGui.QDialog):
         logger.info(u"Send back {}".format(decisions))
         self.accept()
         self._defered.callback(decisions)
+
+
+class DConfigure(QtGui.QDialog):
+    def __init__(self, parent):
+        QtGui.QDialog.__init__(self, parent)
+
+        layout = QtGui.QVBoxLayout()
+        self.setLayout(layout)
+
+        form = QtGui.QFormLayout()
+        layout.addLayout(form)
+
+        # treatment
+        self._combo_treatment = QtGui.QComboBox()
+        self._combo_treatment.addItems(
+            [pms.TREATMENTS_NAMES[k] for k in
+             sorted(pms.TREATMENTS_NAMES.viewkeys())])
+        self._combo_treatment.setCurrentIndex(pms.TREATMENT)
+        form.addRow(QtGui.QLabel(trans_PGSM(u"Treatment")),
+                    self._combo_treatment)
+
+        # group size
+        self._spin_groups = QtGui.QSpinBox()
+        self._spin_groups.setMinimum(2)
+        self._spin_groups.setMaximum(100)
+        self._spin_groups.setSingleStep(1)
+        self._spin_groups.setValue(pms.TAILLE_GROUPES)
+        self._spin_groups.setButtonSymbols(QtGui.QSpinBox.NoButtons)
+        self._spin_groups.setMaximumWidth(50)
+        form.addRow(QtGui.QLabel(trans_PGSM(u"Group size")), self._spin_groups)
+        
+        # rate for the individual account
+        self._spin_rate_individual_account = QtGui.QDoubleSpinBox()
+        self._spin_rate_individual_account.setDecimals(2)
+        self._spin_rate_individual_account.setSingleStep(0.01)
+        self._spin_rate_individual_account.setValue(pms.TAUX_CI)
+        self._spin_rate_individual_account.setButtonSymbols(QtGui.QSpinBox.NoButtons)
+        self._spin_rate_individual_account.setMaximumWidth(50)
+        form.addRow(QtGui.QLabel(
+            trans_PGSM(u"Rate for the individual account")),
+            self._spin_rate_individual_account)
+
+        # rate for the collective account
+        self._spin_rate_collective_account = QtGui.QDoubleSpinBox()
+        self._spin_rate_collective_account.setDecimals(2)
+        self._spin_rate_collective_account.setSingleStep(0.01)
+        self._spin_rate_collective_account.setValue(pms.TAUX_CC)
+        self._spin_rate_collective_account.setButtonSymbols(QtGui.QSpinBox.NoButtons)
+        self._spin_rate_collective_account.setMaximumWidth(50)
+        form.addRow(QtGui.QLabel(
+            trans_PGSM(u"Rate for the collective account")),
+            self._spin_rate_collective_account)
+
+
+        button = QtGui.QDialogButtonBox(
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel)
+        button.accepted.connect(self._accept)
+        button.rejected.connect(self.reject)
+        layout.addWidget(button)
+
+        self.setWindowTitle(trans_PGSM(u"Configure"))
+        self.adjustSize()
+        self.setFixedSize(self.size())
+
+    def _accept(self):
+        pms.TREATMENT = self._combo_treatment.currentIndex()
+        pms.TAILLE_GROUPES = self._spin_groups.value()
+        pms.TAUX_CI = self._spin_rate_individual_account.value()
+        pms.TAUX_CC = self._spin_rate_collective_account.value()
+        self.accept()

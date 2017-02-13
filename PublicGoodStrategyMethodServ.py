@@ -6,8 +6,10 @@ from twisted.internet import defer
 from util import utiltools
 from util.utili18n import le2mtrans
 import PublicGoodStrategyMethodParams as pms
+from PublicGoodStrategyMethodTexts import trans_PGSM
 from random import choice
 import numpy as np
+from PublicGoodStrategyMethodGui import DConfigure
 
 
 logger = logging.getLogger("le2m.{}".format(__name__))
@@ -33,9 +35,19 @@ class Serveur(object):
             u"Public Good - Strategy Method", actions)
 
     def _configure(self):
-        self._le2mserv.gestionnaire_graphique.display_information(
-            le2mtrans(u"There is no parameter to configure"))
-        return
+        screen_configure = DConfigure(self._le2mserv.gestionnaire_graphique.screen)
+        if screen_configure.exec_():
+            self._le2mserv.gestionnaire_graphique.infoserv(
+                trans_PGSM(u"Treatment") + u": {}".format(
+                    pms.TREATMENTS_NAMES[pms.TREATMENT]))
+            self._le2mserv.gestionnaire_graphique.infoserv(
+                trans_PGSM(u"Groups' size") + u": {}".format(pms.TAILLE_GROUPES))
+            self._le2mserv.gestionnaire_graphique.infoserv(
+                trans_PGSM(u"Rate for the individual account") + u": {}".format(
+                    pms.TAUX_CI))
+            self._le2mserv.gestionnaire_graphique.infoserv(
+                trans_PGSM(u"Rate for the collective account") + u": {}".format(
+                    pms.TAUX_CC))
 
     @defer.inlineCallbacks
     def _demarrer(self):
